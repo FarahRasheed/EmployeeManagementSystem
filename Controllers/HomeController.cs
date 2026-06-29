@@ -1,6 +1,4 @@
-using EmployeeManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace EmployeeManagementSystem.Controllers
 {
@@ -8,18 +6,10 @@ namespace EmployeeManagementSystem.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
+            if (HttpContext.Session.GetString("UserId") != null)
+                return RedirectToAction("Index", "Dashboard");
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return RedirectToAction("Login", "Account");
         }
     }
 }

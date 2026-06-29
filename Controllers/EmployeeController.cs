@@ -15,9 +15,15 @@ namespace EmployeeManagementSystem.Controllers
             _context = context;
         }
 
+        // Check if user is logged in
+        private bool IsLoggedIn() =>
+            HttpContext.Session.GetString("UserId") != null;
+
         // GET: /Employee
         public async Task<IActionResult> Index(string searchName, int? searchDepartment)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var employees = _context.Employees.Include(e => e.Department).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchName))
@@ -36,6 +42,8 @@ namespace EmployeeManagementSystem.Controllers
         // GET: /Employee/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var employee = await _context.Employees
                 .Include(e => e.Department)
                 .FirstOrDefaultAsync(e => e.Id == id);
@@ -47,6 +55,8 @@ namespace EmployeeManagementSystem.Controllers
         // GET: /Employee/Create
         public IActionResult Create()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             ViewBag.Departments = new SelectList(_context.Departments, "Id", "Name");
             return View();
         }
@@ -56,6 +66,8 @@ namespace EmployeeManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Employee employee)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
@@ -69,6 +81,8 @@ namespace EmployeeManagementSystem.Controllers
         // GET: /Employee/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null) return NotFound();
             ViewBag.Departments = new SelectList(_context.Departments, "Id", "Name", employee.DepartmentId);
@@ -80,6 +94,8 @@ namespace EmployeeManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Employee employee)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             if (id != employee.Id) return NotFound();
 
             if (ModelState.IsValid)
@@ -95,6 +111,8 @@ namespace EmployeeManagementSystem.Controllers
         // GET: /Employee/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var employee = await _context.Employees
                 .Include(e => e.Department)
                 .FirstOrDefaultAsync(e => e.Id == id);
@@ -108,6 +126,8 @@ namespace EmployeeManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var employee = await _context.Employees.FindAsync(id);
             if (employee != null)
             {

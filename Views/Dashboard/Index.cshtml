@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>Welcome, @ViewBag.Username! 👋</h2>
+    <p class="text-muted">Here's your overview</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow mb-4">
+                <div class="card-body text-center">
+                    <h1 class="display-4">@ViewBag.TotalEmployees</h1>
+                    <h5>Total Employees</h5>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Employee" asp-action="Index" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow mb-4">
+                <div class="card-body text-center">
+                    <h1 class="display-4">@ViewBag.TotalDepartments</h1>
+                    <h5>Total Departments</h5>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Department" asp-action="Index" class="text-white">View All →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-warning shadow mb-4">
+                <div class="card-body text-center">
+                    <h1 class="display-4">🏢</h1>
+                    <h5>Manage System</h5>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Employee" asp-action="Create" class="text-white">Add Employee →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

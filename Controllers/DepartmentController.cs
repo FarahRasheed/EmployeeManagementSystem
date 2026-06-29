@@ -14,24 +14,29 @@ namespace EmployeeManagementSystem.Controllers
             _context = context;
         }
 
-        // GET: /Department
+        private bool IsLoggedIn() =>
+            HttpContext.Session.GetString("UserId") != null;
+
         public async Task<IActionResult> Index()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var departments = await _context.Departments.ToListAsync();
             return View(departments);
         }
 
-        // GET: /Department/Create
         public IActionResult Create()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
             return View();
         }
 
-        // POST: /Department/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Department department)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 _context.Add(department);
@@ -41,19 +46,21 @@ namespace EmployeeManagementSystem.Controllers
             return View(department);
         }
 
-        // GET: /Department/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var department = await _context.Departments.FindAsync(id);
             if (department == null) return NotFound();
             return View(department);
         }
 
-        // POST: /Department/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Department department)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             if (id != department.Id) return NotFound();
 
             if (ModelState.IsValid)
@@ -65,19 +72,21 @@ namespace EmployeeManagementSystem.Controllers
             return View(department);
         }
 
-        // GET: /Department/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var department = await _context.Departments.FindAsync(id);
             if (department == null) return NotFound();
             return View(department);
         }
 
-        // POST: /Department/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
             var department = await _context.Departments.FindAsync(id);
             if (department != null)
             {
